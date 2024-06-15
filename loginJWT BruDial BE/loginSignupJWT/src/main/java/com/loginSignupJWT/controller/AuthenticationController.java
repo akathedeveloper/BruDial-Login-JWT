@@ -5,8 +5,10 @@ import com.loginSignupJWT.dto.JwtAuthenticationResponse;
 import com.loginSignupJWT.dto.RefreshTokenRequest;
 import com.loginSignupJWT.dto.SignUpRequest;
 import com.loginSignupJWT.dto.SigninRequest;
+import com.loginSignupJWT.entities.CustomResponse;
 import com.loginSignupJWT.entities.User;
 import com.loginSignupJWT.services.AuthenticationService;
+import com.loginSignupJWT.utils.CustomResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,16 +23,20 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody SignUpRequest signUpRequest){
-        return ResponseEntity.ok(authenticationService.signup(signUpRequest));
+    public ResponseEntity<CustomResponse<User>> signup(@RequestBody SignUpRequest signUpRequest){
+        // System.out.println("SignUpRequest: " + signUpRequest);
+        User user = authenticationService.signup(signUpRequest);
+        return CustomResponseUtil.createSuccessResponse(user, "User registered successfully");
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SigninRequest signinRequest){
-        return ResponseEntity.ok(authenticationService.signin(signinRequest));
-
-    }@PostMapping("/refresh")
-    public ResponseEntity<JwtAuthenticationResponse> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest){
-        return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
+    public ResponseEntity<CustomResponse<JwtAuthenticationResponse>> signin(@RequestBody SigninRequest signinRequest){
+        JwtAuthenticationResponse jwtResponse = authenticationService.signin(signinRequest);
+        return CustomResponseUtil.createTokenResponse(jwtResponse, "Login successful", jwtResponse.getToken());
+    }
+    @PostMapping("/refresh")
+    public ResponseEntity<CustomResponse<JwtAuthenticationResponse>> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest){
+        JwtAuthenticationResponse jwtResponse = authenticationService.refreshToken(refreshTokenRequest);
+        return CustomResponseUtil.createTokenResponse(jwtResponse, "Token refreshed successfully", jwtResponse.getToken());
     }
 }
