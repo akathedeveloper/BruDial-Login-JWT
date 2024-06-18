@@ -16,7 +16,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String firstname;
@@ -34,6 +34,7 @@ public class User implements UserDetails {
     private String profilePicture;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
     @Column(nullable = false)
     private String country;
 
