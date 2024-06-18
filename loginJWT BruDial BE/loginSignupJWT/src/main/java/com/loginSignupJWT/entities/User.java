@@ -1,12 +1,12 @@
 package com.loginSignupJWT.entities;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,11 +17,35 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable = false)
     private String firstname;
+    @Column(nullable = false)
     private String secondname;
+    @Column(unique = true)
     private String email;
     private String password;
     private Role role;
+
+    @Column(nullable = false)
+    private String gender;
+    private String assignedNumber;
+    private String registerBy;
+    private String profilePicture;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private String country;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

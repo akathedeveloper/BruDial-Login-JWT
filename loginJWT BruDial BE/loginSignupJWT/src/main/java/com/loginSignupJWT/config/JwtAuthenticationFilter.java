@@ -1,9 +1,8 @@
 package com.loginSignupJWT.config;
 
 
-import ch.qos.logback.core.util.StringUtil;
-import com.loginSignupJWT.services.JWTService;
-import com.loginSignupJWT.services.UserService;
+import com.loginSignupJWT.repository.services.JWTService;
+import com.loginSignupJWT.repository.services.UserService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,8 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

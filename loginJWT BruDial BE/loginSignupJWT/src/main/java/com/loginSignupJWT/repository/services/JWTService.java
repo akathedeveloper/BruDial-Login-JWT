@@ -1,4 +1,4 @@
-package com.loginSignupJWT.services;
+package com.loginSignupJWT.repository.services;
 
 import com.loginSignupJWT.entities.User;
 import org.springframework.security.core.userdetails.UserDetails;

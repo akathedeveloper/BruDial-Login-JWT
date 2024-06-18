@@ -1,10 +1,11 @@
+// src/component/AdminLogin.js
 import React, { useState } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
-import '../css/Login.css'; // Import the CSS file
+import '../css/Login.css';
 import image from './Login.png';
 
-const Login = () => {
+const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -12,16 +13,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/signin', { email, password });
+      const response = await axios.post('/admin/login', { email, password });
       const token = response.data.token;
-      console.log('JWT Token:', token); // Log the token to the console
-      localStorage.setItem('token', token); // Save JWT token
-      console.log('Token stored in localStorage:', localStorage.getItem('token')); // Verify token storage
-      navigate('/home'); // Redirect to a protected route
+      localStorage.setItem('adminToken', token);
+      navigate('/admin/register');
     } catch (error) {
       console.error('Login failed', error);
     }
   };
+
   return (
     <div className="login-page">
       <div className="circle top-right"></div>
@@ -30,16 +30,13 @@ const Login = () => {
         <div className="login-left">
           <div className="logo">
             <div className="square"></div>
-            <h3>BruDial</h3>
+            <h3>Admin Portal</h3>
           </div>
           <div className='welcome-text'>
-          <h2>Welcome Back :)</h2>
+            <h2>Welcome Admin</h2>
           </div>
           <div className='welcome-para'>
-          <p>
-            To keep connected with us please login with your personal
-            information by email address and password
-          </p>
+            <p>Please login with your admin credentials</p>
           </div>
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="form-group">
@@ -52,7 +49,6 @@ const Login = () => {
             </div>
             <button type="submit" className="login-button">Login</button>
           </form>
-          <button className="reset-password">Reset Password !!</button>
         </div>
         <div className="login-right">
           <img src={image} alt="Login Illustration" />
@@ -62,5 +58,4 @@ const Login = () => {
   );
 };
 
-export default Login;
-
+export default AdminLogin;

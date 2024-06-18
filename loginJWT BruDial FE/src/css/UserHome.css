@@ -1,0 +1,48 @@
+/* src/css/UserHome.css */
+
+.user-home-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .user-home-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .user-details {
+    margin-bottom: 10px;
+  }
+  
+  .user-details h1 {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  
+  .user-details img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .user-home-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .user-home-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .user-home-button:focus {
+    outline: none;
+  }
+  

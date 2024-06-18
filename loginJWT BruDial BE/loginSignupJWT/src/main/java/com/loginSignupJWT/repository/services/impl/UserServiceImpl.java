@@ -1,8 +1,8 @@
-package com.loginSignupJWT.services.impl;
+package com.loginSignupJWT.repository.services.impl;
 
 
 import com.loginSignupJWT.repository.UserRepository;
-import com.loginSignupJWT.services.UserService;
+import com.loginSignupJWT.repository.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

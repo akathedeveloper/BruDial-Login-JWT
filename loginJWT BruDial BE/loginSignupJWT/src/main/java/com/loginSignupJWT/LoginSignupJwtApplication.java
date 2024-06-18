@@ -11,8 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class LoginSignupJwtApplication implements CommandLineRunner {
-
-	@Autowired
+ 	@Autowired
 	private UserRepository userRepository;
 
 	public static void main(String[] args) {

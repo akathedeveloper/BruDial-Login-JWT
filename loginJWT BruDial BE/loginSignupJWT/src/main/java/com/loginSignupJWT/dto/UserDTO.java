@@ -3,13 +3,17 @@ package com.loginSignupJWT.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
-public class SignUpRequest {
+public class UserDTO {
     private String email;
-    private String password;
     private String firstName;
     private String lastName;
     private String gender;
     private String country;
+    private String profilePicture;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

@@ -1,7 +1,7 @@
 package com.loginSignupJWT.config;
 
 import com.loginSignupJWT.entities.Role;
-import com.loginSignupJWT.services.UserService;
+import com.loginSignupJWT.repository.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,10 +28,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request->request.requestMatchers("/api/v1/auth/**")
+                .authorizeHttpRequests(request->request.requestMatchers("/**")
                         .permitAll()
-                        .requestMatchers("api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
-                        .requestMatchers("api/v1/user").hasAnyAuthority(Role.USER.name())
+                        .requestMatchers("/admin/register").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/user/home").hasAnyAuthority(Role.USER.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
