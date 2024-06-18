@@ -5,11 +5,14 @@ import com.loginSignupJWT.dto.SigninRequest;
 import com.loginSignupJWT.dto.UserDTO;
 import com.loginSignupJWT.entities.CustomResponse;
 import com.loginSignupJWT.entities.Role;
+import com.loginSignupJWT.entities.User;
 import com.loginSignupJWT.repository.UserRepository;
 import com.loginSignupJWT.repository.services.AuthenticationService;
+import com.loginSignupJWT.repository.services.UserService;
 import com.loginSignupJWT.repository.services.impl.JWTServiceImpl;
 import com.loginSignupJWT.utils.CustomResponseUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,16 +25,6 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-//    @GetMapping("/home")
-//    public ResponseEntity<UserDetailsDTO> getUserDetails() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
-//
-//        UserDetailsDTO userDetailsDTO = new UserDetailsDTO(user.getFirstname(), user.getSecondname(), user.getEmail());
-//        return ResponseEntity.ok(userDetailsDTO);
-//    }
-
     @GetMapping
     public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Hi User");
@@ -39,6 +32,9 @@ public class UserController {
 
     private final AuthenticationService authenticationService;
     private final JWTServiceImpl jwtService;
+
+    @Autowired
+    private UserService userService;
 
 
 
@@ -57,14 +53,10 @@ public class UserController {
     public ResponseEntity<CustomResponse<UserDTO>> getUserDetails(@RequestHeader("Authorization") String token) {
         // Extract the JWT token from the Authorization header
         String jwtToken = token.substring(7); // Remove "Bearer " prefix
-
-        // Extract user details from the JWT token
         String userEmail = jwtService.extractUserName(jwtToken);
 
-        // Retrieve user details from the authentication service
         UserDTO userDTO = authenticationService.getUserDetails(userEmail);
 
-        // Prepare the response
         CustomResponse<UserDTO> response = new CustomResponse<>();
         response.setData(userDTO);
         response.setMessage("User details retrieved successfully");
@@ -72,5 +64,25 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<CustomResponse<User>> updateUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
+        String jwtToken = token.substring(7);
+        String userEmail = jwtService.extractUserName(jwtToken);
+        User existingUser = userRepository.findByEmail(userEmail).orElse(null);
+        if (existingUser == null) {
+            return CustomResponseUtil.createErrorResponse(HttpStatus.NOT_FOUND, "Username not found","Please give correct credentials");
+        }
+
+        user.setId(existingUser.getId());
+        try {
+            User updatedUser = userService.updateUser(user);
+            return CustomResponseUtil.createSuccessResponse(updatedUser, "User updated successfully");
+        } catch (Exception e) {
+            return CustomResponseUtil.createErrorResponse( HttpStatus.INTERNAL_SERVER_ERROR,"Exception occurred","User details can not be updated");
+        }
+    }
+
+
 
 }
